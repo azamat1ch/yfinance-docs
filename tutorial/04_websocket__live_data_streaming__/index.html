@@ -1,0 +1,1589 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../03_screener___query_objects_/">
+      
+      
+        <link rel="next" href="../05_domain_entities__sector__industry__market__/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Chapter 4: WebSocket (Live Data Streaming) - Yahoo Finance Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-4-websocket-live-data-streaming" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Yahoo Finance Docs" class="md-header__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yahoo Finance Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 4: WebSocket (Live Data Streaming)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Yahoo Finance Docs" class="md-nav__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Yahoo Finance Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yfinance documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Caching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/multi_level_columns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Multi-Level Column Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/price_repair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Price Repair
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Running a branch
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Unit Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analysis &amp; Holdings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.financials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Financials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Functions and Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.funds_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FundsData class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.market/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Market
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.price_history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PriceHistory class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.screener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Screener &amp; Query
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search &amp; Lookup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.sector_industry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sector and Industry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.stock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Stock
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.ticker_tickers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ticker and Tickers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.websocket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorial
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorial
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorial: yfinance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_ticker_object_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 1: The Ticker Object
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_multi_ticker_operations_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 2: Multi-Ticker Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_screener___query_objects_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 3: Screener &amp; Query Objects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Chapter 4: WebSocket (Live Data Streaming)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 4: WebSocket (Live Data Streaming)
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-watching-a-stock-price-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Watching a Stock Price Live
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-old-way-vs-the-live-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Old Way vs. The Live Way
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-websocket-for-live-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the WebSocket for Live Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the WebSocket for Live Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-define-a-message-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Define a Message Handler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-subscribe-and-listen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Subscribe and Listen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_domain_entities__sector__industry__market__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 5: Domain Entities (Sector, Industry, Market)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_yfdata__data_fetching_layer__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 6: YfData (Data Fetching Layer)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_data_scrapers_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 7: Data Scrapers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-watching-a-stock-price-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Watching a Stock Price Live
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-old-way-vs-the-live-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Old Way vs. The Live Way
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-websocket-for-live-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the WebSocket for Live Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the WebSocket for Live Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-define-a-message-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Define a Message Handler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-subscribe-and-listen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Subscribe and Listen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-4-websocket-live-data-streaming">Chapter 4: WebSocket (Live Data Streaming)</h1>
+<p>In the previous chapters on the <a href="../01_ticker_object_/">Ticker Object</a> and <a href="../03_screener___query_objects_/">Screener &amp; Query Objects</a>, we've been <em>asking</em> for data. We say, "Give me the history for Apple," and <code>yfinance</code> goes and fetches it. This is like looking up a historical record in an archive. But what if you want to see the price of Apple stock change <em>right now</em>, as trades are happening?</p>
+<p>For that, you need a live feed, not an archive. This is where <code>yfinance</code>'s WebSocket comes in. It opens a continuous, live connection to Yahoo Finance, so you get price updates the moment they happen.</p>
+<h3 id="the-goal-watching-a-stock-price-live">The Goal: Watching a Stock Price Live</h3>
+<p>Let's set a simple goal: <strong>Watch the price of Apple (<code>AAPL</code>) and Bitcoin (<code>BTC-USD</code>) change in real-time.</strong> We want our program to print out new price information as soon as it's available, just like a live ticker on a news channel.</p>
+<h3 id="the-old-way-vs-the-live-way">The Old Way vs. The Live Way</h3>
+<p>With the tools we've used so far, you might try to solve this by repeatedly asking for the price every second.</p>
+<pre><code class="language-python"># The inefficient way (don't do this!)
+import time
+import yfinance as yf
+
+aapl = yf.Ticker(&quot;AAPL&quot;)
+while True:
+    price = aapl.history(period=&quot;1d&quot;)['Close'][-1]
+    print(f&quot;AAPL price: {price}&quot;)
+    time.sleep(1) # Wait one second and ask again
+</code></pre>
+<p>This is called "polling," and it's inefficient. It's like calling the library every second to ask, "Is the book I want back yet?" Most of the time, the answer is no, and you've wasted a phone call.</p>
+<p>The WebSocket is a much smarter approach. It's like giving the librarian your phone number and saying, "Call me the instant that book is returned." You don't have to keep asking; the information comes to you.</p>
+<h3 id="using-the-websocket-for-live-data">Using the WebSocket for Live Data</h3>
+<p>Let's see how to set up this live feed. The process involves three simple steps:
+1.  Define what to <em>do</em> with each piece of live data.
+2.  Subscribe to the stocks you're interested in.
+3.  Start listening.</p>
+<h4 id="step-1-define-a-message-handler">Step 1: Define a Message Handler</h4>
+<p>First, we need to create a simple Python function that will be called every time a new price update arrives. This function will receive the data as a dictionary and can do whatever we want with it. For our goal, we'll just print it.</p>
+<pre><code class="language-python"># This function will process each incoming message
+def message_handler(message):
+    print(&quot;Received a new update:&quot;)
+    print(message)
+</code></pre>
+<p>Think of this <code>message_handler</code> as your set of instructions for the librarian. When they call you, what should you do? In this case, just announce the news.</p>
+<h4 id="step-2-subscribe-and-listen">Step 2: Subscribe and Listen</h4>
+<p>Now, we create a <code>WebSocket</code> object, tell it which tickers to subscribe to, and start listening with our handler function.</p>
+<pre><code class="language-python">import yfinance as yf
+
+# This function will process each incoming message
+def message_handler(message):
+    print(message)
+
+# Create a WebSocket connection
+with yf.WebSocket() as ws:
+    # Subscribe to Apple and Bitcoin
+    ws.subscribe([&quot;AAPL&quot;, &quot;BTC-USD&quot;])
+
+    # Start listening for messages and pass them to our handler
+    ws.listen(message_handler)
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<p>Your program will first print some status messages like "Connected to WebSocket." and "Listening for messages...". Then, it will sit quietly. As soon as there's a trade or price change for Apple or Bitcoin on the real-world market, a new message will instantly appear on your screen!</p>
+<pre><code>{'id': 'AAPL', 'price': 171.52, 'time': 1678886400, 'exchange': 'NMS', ...}
+{'id': 'BTC-USD', 'price': 24500.1, 'time': 1678886401, 'exchange': 'CCC', ...}
+{'id': 'AAPL', 'price': 171.53, 'time': 1678886402, 'exchange': 'NMS', ...}
+...and so on...
+</code></pre>
+<p>The program will keep running and printing updates until you stop it (usually by pressing <code>Ctrl+C</code>). You've successfully created a live data stream!</p>
+<p><em>Note: For advanced users, <code>yfinance</code> also provides an <code>AsyncWebSocket</code> for use in asynchronous Python applications, but the synchronous <code>WebSocket</code> is the easiest way to get started.</em></p>
+<h3 id="whats-happening-under-the-hood">What's Happening Under the Hood?</h3>
+<p>The process is fundamentally different from a normal data request. It's a persistent conversation.</p>
+<ol>
+<li><strong>Open the Line:</strong> When you create the <code>yf.WebSocket()</code>, your program opens a special, long-lasting connection to a Yahoo Finance server (the URL is <code>wss://streamer.finance.yahoo.com</code>). This is like opening a phone line that stays connected.</li>
+<li><strong>State Your Interest:</strong> <code>ws.subscribe(["AAPL"])</code> sends a specific message over that line that says, "I am interested in AAPL. Please send me updates for it."</li>
+<li><strong>Listen and Wait:</strong> <code>ws.listen(handler)</code> starts a loop that does nothing but wait for the server to send a message. It's now in "receive mode."</li>
+<li><strong>Data is Pushed:</strong> When Yahoo's servers register a new trade for AAPL, they find all the open connections (like yours) that subscribed to it and <em>push</em> the new price data down the line.</li>
+<li><strong>Process the Data:</strong> Your waiting <code>listen</code> loop receives the data, decodes it from its raw format into a clean Python dictionary, and immediately calls your <code>message_handler</code> function with that dictionary as the input.</li>
+</ol>
+<p>This "push" model is what makes it real-time and efficient.</p>
+<p>Here is a diagram illustrating the live streaming process:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant U as User/Your Code
+    participant WS as yfinance WebSocket
+    participant YAPI as Yahoo Streamer API
+
+    U-&gt;&gt;WS: yf.WebSocket()
+    WS-&gt;&gt;YAPI: Open persistent connection
+    YAPI--&gt;&gt;WS: Connection established
+
+    U-&gt;&gt;WS: ws.subscribe([&quot;AAPL&quot;])
+    WS-&gt;&gt;YAPI: Send 'subscribe' message for &quot;AAPL&quot;
+    Note right of YAPI: Server now knows to send you AAPL updates
+
+    U-&gt;&gt;WS: ws.listen(handler)
+    Note over WS: Enters a loop, waiting for messages...
+
+    loop Live Market Activity
+        YAPI--&gt;&gt;WS: PUSH: New price data for &quot;AAPL&quot;
+        WS-&gt;&gt;WS: Decode the message
+        WS-&gt;&gt;U: Call handler(decoded_message)
+    end
+</code></pre>
+<p>If you look inside the <code>yfinance</code> source code in the file <code>yfinance/live.py</code>, you can see this logic clearly.</p>
+<p>The <code>subscribe</code> method simply formats your list of symbols into a JSON message and sends it.</p>
+<pre><code class="language-python"># Simplified from yfinance/live.py inside the WebSocket class
+
+def subscribe(self, symbols: Union[str, List[str]]):
+    # ... some setup code ...
+    self._subscriptions.update(symbols)
+
+    # This is the message sent to Yahoo's server
+    message = {&quot;subscribe&quot;: list(self._subscriptions)}
+    self._ws.send(json.dumps(message))
+</code></pre>
+<p>The <code>listen</code> method contains the core waiting loop. It waits to receive a message, decodes it, and then passes it to your handler.</p>
+<pre><code class="language-python"># Simplified from yfinance/live.py inside the WebSocket class
+
+def listen(self, message_handler: Optional[Callable[[dict], None]] = None):
+    # ... setup code ...
+    while True:
+        try:
+            # 1. Wait for and receive a message from the server
+            message = self._ws.recv()
+
+            # 2. Decode the raw message into a dictionary
+            decoded_message = self._decode_message(...)
+
+            # 3. If a handler was provided, call it with the data
+            if message_handler:
+                message_handler(decoded_message)
+        # ... error handling ...
+</code></pre>
+<p>This simple but powerful structure allows you to react to market events in real time.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>You've now learned how to tap into a live stream of financial data, moving beyond historical analysis into the world of real-time monitoring.</p>
+<ul>
+<li><strong>What you learned:</strong> How to get live price updates pushed to your program as they happen.</li>
+<li><strong>Key Tool:</strong> The <code>yf.WebSocket</code> class, which manages a persistent connection to Yahoo's streaming servers.</li>
+<li><strong>The Big Idea:</strong> Instead of repeatedly <em>requesting</em> (pulling) data, you <em>subscribe</em> once and the server <em>pushes</em> updates to you, which is ideal for time-sensitive applications.</li>
+</ul>
+<p>So far, we've focused on the tools for fetching data—whether it's for one stock, many stocks, or a live stream. But what about the data itself? What does it mean when a stock is in the "Technology" sector or the "Software—Infrastructure" industry? How can we explore these categories?</p>
+<p>In the next chapter, we'll dive into the concepts that organize the financial world with <a href="../05_domain_entities__sector__industry__market__/">Domain Entities (Sector, Industry, Market)</a>.</p>
+<hr />
+<p>Generated by Codebase Knowledge Builder</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../js/chat-config.js"></script>
+      
+        <script src="../../js/chat.js"></script>
+      
+    
+  </body>
+</html>

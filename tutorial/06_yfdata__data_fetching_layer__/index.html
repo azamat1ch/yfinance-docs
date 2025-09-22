@@ -1,0 +1,1596 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../05_domain_entities__sector__industry__market__/">
+      
+      
+        <link rel="next" href="../07_data_scrapers_/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Chapter 6: YfData (Data Fetching Layer) - Yahoo Finance Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-6-yfdata-data-fetching-layer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Yahoo Finance Docs" class="md-header__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yahoo Finance Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 6: YfData (Data Fetching Layer)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Yahoo Finance Docs" class="md-nav__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Yahoo Finance Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yfinance documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Caching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/multi_level_columns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Multi-Level Column Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/price_repair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Price Repair
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Running a branch
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Unit Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analysis &amp; Holdings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.financials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Financials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Functions and Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.funds_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FundsData class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.market/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Market
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.price_history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PriceHistory class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.screener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Screener &amp; Query
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search &amp; Lookup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.sector_industry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sector and Industry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.stock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Stock
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.ticker_tickers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ticker and Tickers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.websocket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorial
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorial
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorial: yfinance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_ticker_object_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 1: The Ticker Object
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_multi_ticker_operations_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 2: Multi-Ticker Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_screener___query_objects_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 3: Screener &amp; Query Objects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_websocket__live_data_streaming__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 4: WebSocket (Live Data Streaming)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_domain_entities__sector__industry__market__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 5: Domain Entities (Sector, Industry, Market)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Chapter 6: YfData (Data Fetching Layer)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 6: YfData (Data Fetching Layer)
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-centralizing-all-data-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Centralizing All Data Requests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-roles-of-the-librarian-yfdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Roles of the "Librarian" (YfData)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Roles of the &#34;Librarian&#34; (YfData)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-its-a-singleton-theres-only-one-librarian" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. It's a Singleton: There's Only One Librarian
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-session-management-the-master-library-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Session Management: The Master Library Card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-authentication-the-secret-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Authentication: The Secret Handshake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-caching-the-smart-librarians-desk" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Caching: The Smart Librarian's Desk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_data_scrapers_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 7: Data Scrapers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-centralizing-all-data-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Centralizing All Data Requests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-roles-of-the-librarian-yfdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Roles of the "Librarian" (YfData)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Roles of the &#34;Librarian&#34; (YfData)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-its-a-singleton-theres-only-one-librarian" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. It's a Singleton: There's Only One Librarian
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-session-management-the-master-library-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Session Management: The Master Library Card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-authentication-the-secret-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Authentication: The Secret Handshake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-caching-the-smart-librarians-desk" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Caching: The Smart Librarian's Desk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-6-yfdata-data-fetching-layer">Chapter 6: YfData (Data Fetching Layer)</h1>
+<p>In the previous chapter on <a href="../05_domain_entities__sector__industry__market__/">Domain Entities (Sector, Industry, Market)</a>, we explored high-level concepts like sectors and industries. All the objects we've used so far—<code>Ticker</code>, <code>Sector</code>, <code>WebSocket</code>—are designed to make asking for data easy and intuitive. But have you ever wondered what's working behind the scenes to actually fetch that data from the internet?</p>
+<p>This chapter pulls back the curtain on the library's engine room: the <code>YfData</code> object. You won't ever need to use it directly, but understanding it is key to seeing how <code>yfinance</code> works so efficiently.</p>
+<h3 id="the-goal-centralizing-all-data-requests">The Goal: Centralizing All Data Requests</h3>
+<p>Imagine a large library where every researcher goes to the shelves themselves to get books. It would be chaos! People might get in each other's way, and if two people need the same book, they'd both have to walk all the way to the shelf.</p>
+<p>A better system is to have a single, official librarian. Every researcher gives their request to this librarian, who then fetches the books in an organized way. This is exactly the problem <code>YfData</code> solves. It acts as the single, official librarian for the entire <code>yfinance</code> project.</p>
+<p>Every part of the library, whether it's a <code>Ticker</code> object asking for history or a <code>Sector</code> object asking for top companies, sends its request to the one and only <code>YfData</code> instance.</p>
+<h3 id="key-roles-of-the-librarian-yfdata">Key Roles of the "Librarian" (<code>YfData</code>)</h3>
+<p>Our <code>YfData</code> librarian has several crucial responsibilities that make the whole library run smoothly.</p>
+<h4 id="1-its-a-singleton-theres-only-one-librarian">1. It's a Singleton: There's Only One Librarian</h4>
+<p>No matter how many <code>Ticker</code> objects you create, they all share the <em>exact same</em> <code>YfData</code> instance. This is a programming pattern called a "singleton."</p>
+<pre><code class="language-python">import yfinance as yf
+
+# Create two different Ticker objects
+msft = yf.Ticker(&quot;MSFT&quot;)
+aapl = yf.Ticker(&quot;AAPL&quot;)
+
+# Let's peek inside and see their data fetcher
+# The 'is' keyword checks if they are the exact same object
+print(msft._data is aapl._data)
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<pre><code>True
+</code></pre>
+<p>This confirms it! Both <code>msft</code> and <code>aapl</code> are talking to the same "librarian" (<code>_data</code> is the internal name for the <code>YfData</code> instance). This prevents conflicts and keeps communication with Yahoo Finance consistent.</p>
+<h4 id="2-session-management-the-master-library-card">2. Session Management: The Master Library Card</h4>
+<p>The <code>YfData</code> object holds the network "session," which is like the master library card for accessing Yahoo Finance. This session keeps track of important details for communicating with the server.</p>
+<h4 id="3-authentication-the-secret-handshake">3. Authentication: The Secret Handshake</h4>
+<p>To get data from Yahoo Finance, you can't just ask. The server requires a "cookie" (a temporary access pass) and a "crumb" (a special security token). <code>YfData</code> is solely responsible for getting these credentials and attaching them to every request. It knows the "secret handshake" required to get data, so the <code>Ticker</code> objects don't have to.</p>
+<h4 id="4-caching-the-smart-librarians-desk">4. Caching: The Smart Librarian's Desk</h4>
+<p><code>YfData</code> is smart. If you ask for Microsoft's company info, <code>YfData</code> fetches it and keeps a copy on its "desk." If you ask for the same information again a moment later, it doesn't go all the way back to Yahoo's servers. It just gives you the copy it already has. This is called <strong>caching</strong>, and it makes repeated requests for the same data incredibly fast.</p>
+<h3 id="whats-happening-under-the-hood">What's Happening Under the Hood?</h3>
+<p>Let's trace the journey of a simple data request to see how <code>YfData</code> does its job.</p>
+<ol>
+<li><strong>The User's Request:</strong> You ask for company information.
+    <code>python
+    info = msft.info</code></li>
+<li><strong>Delegation:</strong> The <code>msft</code> <code>Ticker</code> object doesn't know how to talk to the internet. Instead, it prepares the URL and turns to its internal data fetcher, <code>self._data</code> (our <code>YfData</code> librarian), and says, "Please get the data from this address."</li>
+<li><strong>The Librarian Takes Over (<code>YfData</code>):</strong><ul>
+<li><strong>Check Cache:</strong> <code>YfData</code> first checks its cache (its desk). Have I fetched this exact URL recently? If yes, it returns the stored data instantly.</li>
+<li><strong>Get Credentials:</strong> If the data isn't cached, <code>YfData</code> makes sure it has a valid cookie and crumb. If not, it gets them from Yahoo Finance.</li>
+<li><strong>Make the Call:</strong> It uses its shared network session to send the request to Yahoo Finance, with the correct credentials attached.</li>
+<li><strong>Store and Return:</strong> When Yahoo's server responds, <code>YfData</code> stores the new data in its cache for next time and hands the result back to the <code>msft</code> <code>Ticker</code> object.</li>
+</ul>
+</li>
+<li><strong>Final Polish:</strong> The <code>msft</code> object takes the raw data from <code>YfData</code> and formats it into the nice Python dictionary that you see.</li>
+</ol>
+<p>Here is a diagram of this efficient workflow:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant U as User
+    participant TO as Ticker Object
+    participant YD as YfData (The Librarian)
+    participant YC as YfData Cache
+    participant YAPI as Yahoo Finance API
+
+    U-&gt;&gt;TO: msft.info
+    TO-&gt;&gt;YD: Please fetch data for &quot;info&quot;
+    YD-&gt;&gt;YC: Do you have &quot;info&quot; data cached?
+    alt Data is in cache
+        YC--&gt;&gt;YD: Yes, here it is.
+        YD--&gt;&gt;TO: Return cached data
+    else Data is NOT in cache
+        YC--&gt;&gt;YD: No, I don't.
+        YD-&gt;&gt;YAPI: Request &quot;info&quot; data (with cookie/crumb)
+        YAPI--&gt;&gt;YD: Return raw &quot;info&quot; data
+        YD-&gt;&gt;YC: Store this data for next time
+        YD--&gt;&gt;TO: Return new data
+    end
+    TO--&gt;&gt;U: Return formatted dictionary
+</code></pre>
+<p>This entire process is managed by the <code>YfData</code> class located in <code>yfinance/data.py</code>. Its singleton behavior is defined using a special "metaclass."</p>
+<pre><code class="language-python"># Simplified from yfinance/data.py
+
+class SingletonMeta(type):
+    _instances = {} # A dictionary to hold the single instance
+    # ... logic to ensure only one instance is ever created ...
+
+class YfData(metaclass=SingletonMeta):
+    &quot;&quot;&quot;
+    Have one place to retrieve data from Yahoo API...
+    &quot;&quot;&quot;
+    def __init__(self, session=None, proxy=None):
+        self._crumb = None
+        self._cookie = None
+        # ... and other setup ...
+</code></pre>
+<p>When a <code>Ticker</code> object is created in <code>yfinance/base.py</code>, it gets access to this single instance.</p>
+<pre><code class="language-python"># Simplified from yfinance/base.py
+
+class TickerBase:
+    def __init__(self, ticker, session=None):
+        # ...
+        # This line gets the one and only YfData instance!
+        self._data: YfData = YfData(session=session)
+        # ...
+</code></pre>
+<p>And when <code>YfData</code> makes a request, it uses methods like <code>cache_get</code> that automatically handle both caching and fetching. The <code>@lru_cache</code> is the Python decorator that provides the magic of caching.</p>
+<pre><code class="language-python"># Simplified from yfinance/data.py
+
+class YfData(metaclass=SingletonMeta):
+    # ...
+
+    @lru_cache(maxsize=cache_maxsize) # This enables caching!
+    def cache_get(self, url, params=None, timeout=30):
+        # This method calls another method that handles
+        # cookies, crumbs, and the actual network request.
+        return self.get(url, params, timeout)
+</code></pre>
+<p>By centralizing all this logic, <code>yfinance</code> ensures that every part of the library is efficient, consistent, and robust.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>You've now met the unsung hero of the <code>yfinance</code> library, the <code>YfData</code> object.</p>
+<ul>
+<li><strong>What it is:</strong> The central, singleton "librarian" that manages all communication with Yahoo Finance.</li>
+<li><strong>Why it's important:</strong> It handles session management, authentication (cookies/crumbs), and caching to make data fetching fast, efficient, and consistent across the entire library.</li>
+<li><strong>How it's used:</strong> You don't use it directly. It works silently in the background, serving requests from higher-level objects like <code>Ticker</code> and <code>Sector</code>.</li>
+<li><strong>The Big Idea:</strong> Centralizing the data fetching layer avoids chaos and optimizes performance, just like having a single, skilled librarian is better than a free-for-all.</li>
+</ul>
+<p>Now we know that <code>YfData</code> is responsible for fetching the raw data from Yahoo. But this raw data is often in a complex format like JSON or HTML. How does <code>yfinance</code> turn that raw data into the clean, organized <code>pandas</code> DataFrames we love to use? For that, it needs another set of specialized tools.</p>
+<p>In the final chapter, we'll meet these tools: the <a href="../07_data_scrapers_/">Data Scrapers</a>.</p>
+<hr />
+<p>Generated by Codebase Knowledge Builder</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../js/chat-config.js"></script>
+      
+        <script src="../../js/chat.js"></script>
+      
+    
+  </body>
+</html>

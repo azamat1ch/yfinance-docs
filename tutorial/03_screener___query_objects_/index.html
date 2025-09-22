@@ -1,0 +1,1649 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../02_multi_ticker_operations_/">
+      
+      
+        <link rel="next" href="../04_websocket__live_data_streaming__/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Chapter 3: Screener & Query Objects - Yahoo Finance Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-3-screener-query-objects" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Yahoo Finance Docs" class="md-header__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yahoo Finance Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 3: Screener &amp; Query Objects
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Yahoo Finance Docs" class="md-nav__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Yahoo Finance Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yfinance documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Caching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/multi_level_columns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Multi-Level Column Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/price_repair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Price Repair
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Running a branch
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Unit Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analysis &amp; Holdings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.financials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Financials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Functions and Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.funds_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FundsData class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.market/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Market
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.price_history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PriceHistory class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.screener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Screener &amp; Query
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search &amp; Lookup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.sector_industry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sector and Industry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.stock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Stock
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.ticker_tickers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ticker and Tickers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.websocket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorial
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorial
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorial: yfinance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_ticker_object_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 1: The Ticker Object
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_multi_ticker_operations_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 2: Multi-Ticker Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Chapter 3: Screener &amp; Query Objects
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 3: Screener &amp; Query Objects
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-discovering-new-stocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Discovering New Stocks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-easy-way-predefined-screeners" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Easy Way: Predefined Screeners
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-powerful-way-building-your-own-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Powerful Way: Building Your Own Query
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Powerful Way: Building Your Own Query">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-a-rule-for-the-region" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create a rule for the region
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-a-rule-for-the-sector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create a rule for the sector
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-create-a-rule-for-the-market-cap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Create a rule for the market cap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-combine-the-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Combine the rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-run-the-custom-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Run the custom screen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_websocket__live_data_streaming__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 4: WebSocket (Live Data Streaming)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_domain_entities__sector__industry__market__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 5: Domain Entities (Sector, Industry, Market)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_yfdata__data_fetching_layer__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 6: YfData (Data Fetching Layer)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_data_scrapers_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 7: Data Scrapers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-discovering-new-stocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Discovering New Stocks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-easy-way-predefined-screeners" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Easy Way: Predefined Screeners
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-powerful-way-building-your-own-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Powerful Way: Building Your Own Query
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Powerful Way: Building Your Own Query">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-a-rule-for-the-region" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create a rule for the region
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-a-rule-for-the-sector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create a rule for the sector
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-create-a-rule-for-the-market-cap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Create a rule for the market cap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-combine-the-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Combine the rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-run-the-custom-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Run the custom screen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-3-screener-query-objects">Chapter 3: Screener &amp; Query Objects</h1>
+<p>In the previous chapters on the <a href="../01_ticker_object_/">Ticker Object</a> and <a href="../02_multi_ticker_operations_/">Multi-Ticker Operations</a>, we focused on getting data for stocks we already knew by name, like "MSFT" or "AAPL". But what if you don't know which stocks you're interested in yet? What if you want to <em>discover</em> new investment opportunities?</p>
+<p>This is where the screener comes in. It's like a powerful search engine for the entire stock market, allowing you to find companies that match your specific criteria.</p>
+<h3 id="the-goal-discovering-new-stocks">The Goal: Discovering New Stocks</h3>
+<p>Imagine you're an investor interested in finding stable, US-based technology companies. You might have a specific question like:</p>
+<p><strong>"Show me all technology stocks in the United States with a market capitalization between $10 billion and $100 billion."</strong></p>
+<p>This isn't something you can answer by looking up a single ticker. You need a tool to scan the market for you. Let's see how <code>yfinance</code> helps us do just that.</p>
+<h3 id="1-the-easy-way-predefined-screeners">1. The Easy Way: Predefined Screeners</h3>
+<p>Yahoo Finance already has several common searches saved for you, like "Day Gainers" or "Growth Technology Stocks". <code>yfinance</code> gives you direct access to these.</p>
+<p>Let's try running the "growth_technology_stocks" screener. All we need is the <code>screen()</code> function.</p>
+<pre><code class="language-python">import yfinance as yf
+
+# Run a predefined screener for growth technology stocks
+results = yf.screen('growth_technology_stocks')
+
+# The result is a dictionary, let's look at the first 5 stocks found
+print(results['quotes'][:5])
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<p>You'll get back a list of stocks that match Yahoo's definition of a "growth technology stock," neatly packaged with their ticker symbols and names.</p>
+<pre><code>[{'symbol': 'PANW', 'longName': 'Palo Alto Networks, Inc.'}, {'symbol': 'AMD', 'longName': 'Advanced Micro Devices, Inc.'}, {'symbol': 'ADBE', 'longName': 'Adobe Inc.'}, {'symbol': 'ACN', 'longName': 'Accenture plc'}, {'symbol': 'UBER', 'longName': 'Uber Technologies, Inc.'}]
+</code></pre>
+<p>This is great for common searches, but it doesn't answer our specific question about market cap. For that, we need to build our own custom query.</p>
+<h3 id="2-the-powerful-way-building-your-own-query">2. The Powerful Way: Building Your Own Query</h3>
+<p>To build a custom search, we need to give <code>yfinance</code> a set of precise instructions. We do this using <code>EquityQuery</code> objects. Think of an <code>EquityQuery</code> as a single rule or filter in our search.</p>
+<p>Let's build our query piece by piece to answer our goal.</p>
+<h4 id="step-1-create-a-rule-for-the-region">Step 1: Create a rule for the region</h4>
+<p>First, we want stocks in the United States. The rule for this looks like <code>['region', 'eq', 'us']</code>, which means "region equals 'us'". We wrap this in an <code>EquityQuery</code> object.</p>
+<pre><code class="language-python">from yfinance import EquityQuery
+
+# Rule 1: The company's region must be the United States.
+rule1 = EquityQuery('eq', ['region', 'us'])
+</code></pre>
+<h4 id="step-2-create-a-rule-for-the-sector">Step 2: Create a rule for the sector</h4>
+<p>Next, we only want technology companies. The rule is <code>['sector', 'eq', 'Technology']</code>.</p>
+<pre><code class="language-python"># Rule 2: The company's sector must be 'Technology'.
+rule2 = EquityQuery('eq', ['sector', 'Technology'])
+</code></pre>
+<h4 id="step-3-create-a-rule-for-the-market-cap">Step 3: Create a rule for the market cap</h4>
+<p>Finally, we want a market cap between $10 billion and $100 billion. The operator for "between" is <code>btwn</code>.</p>
+<pre><code class="language-python"># Rule 3: Market cap must be between $10B and $100B.
+# Note: We use the full numbers, not abbreviations like &quot;$10B&quot;.
+rule3 = EquityQuery('btwn', ['intradaymarketcap', 10000000000, 100000000000])
+</code></pre>
+<h4 id="step-4-combine-the-rules">Step 4: Combine the rules</h4>
+<p>Now we have three separate rules. We need to tell the screener to find stocks that match <strong>all three</strong> of them. We do this by creating one final <code>EquityQuery</code> that combines them with an <code>and</code> operator.</p>
+<pre><code class="language-python"># Combine all rules with 'and'
+final_query = EquityQuery('and', [rule1, rule2, rule3])
+
+print(final_query)
+</code></pre>
+<p>This <code>final_query</code> object now represents our complete set of instructions. Printing it shows the nested structure of our search.</p>
+<h4 id="step-5-run-the-custom-screen">Step 5: Run the custom screen</h4>
+<p>We're ready! We pass our custom <code>final_query</code> object to the <code>screen()</code> function.</p>
+<pre><code class="language-python"># Run the screen with our custom query
+results = yf.screen(final_query)
+
+# Let's see the first 5 stocks it found
+print(results['quotes'][:5])
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<p>Success! The output is a list of technology stocks in the US that fit our specific market cap criteria.</p>
+<pre><code>[{'symbol': 'ADSK', 'longName': 'Autodesk, Inc.'}, {'symbol': 'TEAM', 'longName': 'Atlassian Corporation'}, {'symbol': 'FTNT', 'longName': 'Fortinet, Inc.'}, {'symbol': 'ANET', 'longName': 'Arista Networks, Inc.'}, {'symbol': 'PAYX', 'longName': 'Paychex, Inc.'}]
+</code></pre>
+<p>You've just become a data detective, programming your own search to find hidden gems in the market! There are also <code>FundQuery</code> objects for searching mutual funds and many more operators (<code>lt</code> for less than, <code>gt</code> for greater than) to explore.</p>
+<h3 id="whats-happening-under-the-hood">What's Happening Under the Hood?</h3>
+<p>Building a query might seem like magic, but it's a very logical process. You are essentially building a structured request that <code>yfinance</code> translates for Yahoo's servers.</p>
+<ol>
+<li><strong>Build:</strong> When you create an <code>EquityQuery</code> like <code>EquityQuery('eq', ['region', 'us'])</code>, you are creating a Python object that holds your rule (<code>eq</code>, <code>region</code>, <code>us</code>) in a structured way.</li>
+<li><strong>Translate:</strong> When you pass this object to <code>yf.screen()</code>, it calls a special method on your query object called <code>.to_dict()</code>. This method converts your Python object into a JSON format that the Yahoo Finance API can understand.</li>
+<li><strong>Request:</strong> <code>yfinance</code> sends this JSON "instruction sheet" to the Yahoo Finance screener API.</li>
+<li><strong>Return:</strong> The API runs the search on its massive database and sends back a list of matching stocks, which <code>yfinance</code> then gives to you.</li>
+</ol>
+<p>Here's a diagram of the process:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant U as User
+    participant EQ as EquityQuery Object
+    participant S as yf.screen()
+    participant YAPI as Yahoo Screener API
+
+    U-&gt;&gt;EQ: Create query objects (rules)
+    EQ--&gt;&gt;U: Return final_query object
+
+    U-&gt;&gt;S: screen(final_query)
+    S-&gt;&gt;EQ: final_query.to_dict()
+    EQ--&gt;&gt;S: Return JSON-like dictionary
+    S-&gt;&gt;YAPI: POST request with JSON query
+    YAPI--&gt;&gt;S: Return list of matching stocks
+    S--&gt;&gt;U: Return parsed results
+</code></pre>
+<p>If we look inside the <code>yfinance</code> source code, we can see this exact process. The <code>EquityQuery</code> class in <code>yfinance/screener/query.py</code> is responsible for holding your rules.</p>
+<pre><code class="language-python"># Simplified from yfinance/screener/query.py
+
+class QueryBase:
+    def __init__(self, operator, operand):
+        # ... validation code ...
+        self.operator = operator
+        self.operands = operand
+
+    # This is the key translation step!
+    def to_dict(self) -&gt; Dict:
+        return {
+            &quot;operator&quot;: self.operator,
+            &quot;operands&quot;: [o.to_dict() if isinstance(o, QueryBase) else o for o in self.operands]
+        }
+</code></pre>
+<p>Then, the <code>screen</code> function in <code>yfinance/screener/screener.py</code> takes your query object, calls <code>.to_dict()</code>, and sends it off.</p>
+<pre><code class="language-python"># Simplified from yfinance/screener/screener.py
+
+def screen(query, ...):
+    # ... setup code ...
+
+    if isinstance(query, QueryBase):
+        post_query = {}
+        # Here's where it translates your object!
+        post_query['query'] = query.to_dict()
+
+        # It then sends this 'post_query' to Yahoo's API
+        response = _data.post(_SCREENER_URL_, body=post_query, ...)
+        return response.json()['finance']['result'][0]
+</code></pre>
+<p>By separating the <strong>building</strong> of the query (<code>EquityQuery</code>) from the <strong>execution</strong> of the search (<code>screen</code>), <code>yfinance</code> gives you a powerful and flexible way to find exactly what you're looking for.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>You've now moved from simply fetching data to actively discovering it.</p>
+<ul>
+<li><strong>What you learned:</strong> How to find stocks and funds that match specific criteria using the screener functionality.</li>
+<li><strong>Key Tools:</strong><ul>
+<li><code>yf.screen('predefined_name')</code>: For running common, pre-built searches quickly.</li>
+<li><code>EquityQuery</code> &amp; <code>FundQuery</code>: For building your own custom, complex search rules.</li>
+<li><code>yf.screen(your_query_object)</code>: For executing your custom search.</li>
+</ul>
+</li>
+<li><strong>The Big Idea:</strong> You can programmatically define a set of rules and send them to Yahoo Finance to get a list of securities that match, acting as a powerful discovery tool.</li>
+</ul>
+<p>So far, all the data we've worked with has been historical or delayed. But what if you want to see stock prices change in real-time, as they do on a trading floor? For that, we need a continuous connection to the data source.</p>
+<p>In the next chapter, we will explore just that with the <a href="../04_websocket__live_data_streaming__/">WebSocket (Live Data Streaming)</a>.</p>
+<hr />
+<p>Generated by Codebase Knowledge Builder</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../js/chat-config.js"></script>
+      
+        <script src="../../js/chat.js"></script>
+      
+    
+  </body>
+</html>

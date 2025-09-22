@@ -1,0 +1,1568 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../01_ticker_object_/">
+      
+      
+        <link rel="next" href="../03_screener___query_objects_/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Chapter 2: Multi-Ticker Operations - Yahoo Finance Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-2-multi-ticker-operations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Yahoo Finance Docs" class="md-header__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yahoo Finance Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 2: Multi-Ticker Operations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Yahoo Finance Docs" class="md-nav__button md-logo" aria-label="Yahoo Finance Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Yahoo Finance Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yfinance documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Caching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/multi_level_columns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Multi-Level Column Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/price_repair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Price Repair
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Running a branch
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Unit Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analysis &amp; Holdings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.financials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Financials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Functions and Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.funds_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FundsData class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.market/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Market
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.price_history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PriceHistory class
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.screener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Screener &amp; Query
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search &amp; Lookup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.sector_industry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sector and Industry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.stock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Stock
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.ticker_tickers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ticker and Tickers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yfinance.websocket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorial
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorial
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorial: yfinance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_ticker_object_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 1: The Ticker Object
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Chapter 2: Multi-Ticker Operations
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 2: Multi-Ticker Operations
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-comparing-multiple-companies" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Comparing Multiple Companies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-quickest-way-yfdownload" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Quickest Way: yf.download()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-organizer-yftickers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Organizer: yf.Tickers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood-the-magic-of-threading" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood? The Magic of Threading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_screener___query_objects_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 3: Screener &amp; Query Objects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_websocket__live_data_streaming__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 4: WebSocket (Live Data Streaming)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_domain_entities__sector__industry__market__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 5: Domain Entities (Sector, Industry, Market)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_yfdata__data_fetching_layer__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 6: YfData (Data Fetching Layer)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_data_scrapers_/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chapter 7: Data Scrapers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-comparing-multiple-companies" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Goal: Comparing Multiple Companies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-quickest-way-yfdownload" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Quickest Way: yf.download()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-organizer-yftickers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Organizer: yf.Tickers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening-under-the-hood-the-magic-of-threading" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Happening Under the Hood? The Magic of Threading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-2-multi-ticker-operations">Chapter 2: Multi-Ticker Operations</h1>
+<p>In <a href="../01_ticker_object_/">Chapter 1: The Ticker Object</a>, we learned how to get detailed information for a single company using the <code>Ticker</code> object. This is perfect for a deep dive into one stock. But what if you want to compare the performance of several major tech companies, like Microsoft, Apple, and Google? Fetching them one by one would be slow and repetitive.</p>
+<p>This is where multi-ticker operations come in. <code>yfinance</code> provides powerful tools designed to fetch data for many stocks at once, saving you time and code.</p>
+<h3 id="the-goal-comparing-multiple-companies">The Goal: Comparing Multiple Companies</h3>
+<p>Let's set a simple goal: <strong>Get the last month's stock price history for Microsoft (<code>MSFT</code>), Apple (<code>AAPL</code>), and Google (<code>GOOG</code>) all in one go.</strong></p>
+<p>Doing this one by one would look like this:</p>
+<pre><code class="language-python"># The slow, one-by-one way (don't do this!)
+msft_hist = yf.Ticker(&quot;MSFT&quot;).history(period=&quot;1mo&quot;)
+aapl_hist = yf.Ticker(&quot;AAPL&quot;).history(period=&quot;1mo&quot;)
+goog_hist = yf.Ticker(&quot;GOOG&quot;).history(period=&quot;1mo&quot;)
+# Now we have three separate tables to manage...
+</code></pre>
+<p>This works, but it's inefficient. If you have 100 stocks, you'd be making 100 separate requests one after another. <code>yfinance</code> gives us two much better ways: the <code>download()</code> function and the <code>Tickers</code> class.</p>
+<h3 id="1-the-quickest-way-yfdownload">1. The Quickest Way: <code>yf.download()</code></h3>
+<p>Think of <code>yf.download()</code> as a highly efficient assistant. You give it a list of items, and it goes and fetches all of them simultaneously, returning everything to you in a single, neatly organized table. It's the fastest way to get historical price data for multiple stocks.</p>
+<p>Let's use it to achieve our goal. All you need to do is provide the ticker symbols in a single string, separated by spaces.</p>
+<pre><code class="language-python">import yfinance as yf
+
+# Download historical data for multiple tickers at once
+data = yf.download(&quot;MSFT AAPL GOOG&quot;, period=&quot;1mo&quot;)
+
+print(data.head())
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<p>Instead of three separate tables, you get one master <code>pandas</code> DataFrame. The columns are neatly organized by stock price metrics (like <code>Close</code>, <code>Open</code>) and then by ticker symbol.</p>
+<pre><code>                  Adj Close                           Close  ...        Volume
+                       AAPL        GOOG        MSFT    AAPL  ...        GOOG      MSFT
+Date                                                       ...
+2023-10-02       173.750000  132.539993  315.750000   173.75  ...    51351100  20803300
+2023-10-03       172.399994  132.050003  314.730011   172.40  ...    50073500  19927800
+2023-10-04       173.660004  134.940002  318.899994   173.66  ...    52036500  21340100
+2023-10-05       174.910004  134.800003  319.290009   174.91  ...    44362100  19022600
+2023-10-06       177.490005  137.960007  327.260010   177.49  ...    56758400  25400600
+</code></pre>
+<p>Notice the columns have two levels. For example, to get just the closing prices for all stocks, you can easily select the <code>Close</code> column.</p>
+<pre><code class="language-python"># Get just the closing prices
+close_prices = data['Close']
+
+print(close_prices.head())
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<pre><code>                  AAPL        GOOG        MSFT
+Date
+2023-10-02  173.750000  132.539993  315.750000
+2023-10-03  172.399994  132.050003  314.730011
+2023-10-04  173.660004  134.940002  318.899994
+2023-10-05  174.910004  134.800003  319.290009
+2023-10-06  177.490005  137.960007  327.260010
+</code></pre>
+<p>This is incredibly powerful for comparing stocks or calculating portfolio returns. <code>yf.download()</code> is your go-to function for bulk historical data.</p>
+<h3 id="2-the-organizer-yftickers">2. The Organizer: <code>yf.Tickers</code></h3>
+<p>What if you want more than just historical prices? Maybe you want the <code>.info</code> for Apple, the <code>.balance_sheet</code> for Google, and the <code>.history()</code> for Microsoft.</p>
+<p>The <code>Tickers</code> class (notice the "s" at the end) is designed for this. It acts as a container or a folder that holds multiple <code>Ticker</code> objects, allowing you to manage them as a group.</p>
+<pre><code class="language-python">import yfinance as yf
+
+# Create a Tickers object
+tickers = yf.Tickers('msft aapl goog')
+</code></pre>
+<p>This line creates an object that holds three individual <code>Ticker</code> objects. Now you can easily access each one.</p>
+<pre><code class="language-python"># Access the Ticker object for Apple
+aapl_ticker = tickers.tickers['AAPL']
+
+# Now you can use it just like we did in Chapter 1
+print(aapl_ticker.info['longName'])
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<pre><code>Apple Inc.
+</code></pre>
+<p>The <code>Tickers</code> object also has its own <code>.history()</code> method, which conveniently calls <code>yf.download()</code> for you.</p>
+<pre><code class="language-python"># Get history for all tickers in the group
+hist = tickers.history(period=&quot;1mo&quot;)
+
+# The output is grouped by ticker first
+print(hist.head())
+</code></pre>
+<p><strong>What you'll see:</strong></p>
+<p>The output is similar to <code>yf.download()</code>, but the columns are grouped by ticker first by default.</p>
+<pre><code>          AAPL                                         ...         MSFT
+          Open        High         Low       Close     ...         High         Low       Close   Volume
+Date                                                   ...
+2023-10-02  171.220001  174.300003  170.929993  173.750000     ...   319.649994  314.880005  318.920013  20803300
+...
+</code></pre>
+<p><strong>When should you use <code>download</code> vs. <code>Tickers</code>?</strong></p>
+<ul>
+<li><strong>Use <code>yf.download()</code></strong> when you only need <strong>historical price data</strong> for many stocks. It's direct and fast.</li>
+<li><strong>Use <code>yf.Tickers</code></strong> when you need to manage a group of stocks and want to access <strong>different types of data</strong> for each one (e.g., <code>.info</code>, <code>.financials</code>, etc.).</li>
+</ul>
+<h3 id="whats-happening-under-the-hood-the-magic-of-threading">What's Happening Under the Hood? The Magic of Threading</h3>
+<p>How does <code>yf.download("MSFT AAPL GOOG")</code> get data so much faster than calling <code>yf.Ticker()</code> three times in a row? The secret is <strong>multithreading</strong>.</p>
+<p>Imagine you have to get three books from a library. The one-by-one approach is:
+1.  Go to the "M" section, find the Microsoft book, and bring it back.
+2.  Go to the "A" section, find the Apple book, and bring it back.
+3.  Go to the "G" section, find the Google book, and bring it back.</p>
+<p>You spend a lot of time walking back and forth.</p>
+<p>The <code>yf.download()</code> approach is like hiring three assistants (threads):
+1.  You tell Assistant 1 to get the Microsoft book.
+2.  At the same time, you tell Assistant 2 to get the Apple book.
+3.  And at the same time, you tell Assistant 3 to get the Google book.</p>
+<p>They all work in parallel, and the total time it takes is only as long as the slowest assistant. This is much more efficient!</p>
+<p>Here is a diagram showing how <code>yf.download</code> works:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant U as User
+    participant DL as yf.download()
+    participant W1 as Worker 1 (for MSFT)
+    participant W2 as Worker 2 (for AAPL)
+    participant YAPI as Yahoo Finance API
+
+    U-&gt;&gt;DL: yf.download(&quot;MSFT AAPL&quot;)
+    Note over DL: Starts multiple threads
+    DL-&gt;&gt;W1: Get history for &quot;MSFT&quot;
+    DL-&gt;&gt;W2: Get history for &quot;AAPL&quot;
+
+    W1-&gt;&gt;YAPI: Request &quot;MSFT&quot; data
+    W2-&gt;&gt;YAPI: Request &quot;AAPL&quot; data
+    Note left of YAPI: Requests happen in parallel!
+
+    YAPI--&gt;&gt;W1: Return MSFT data
+    YAPI--&gt;&gt;W2: Return AAPL data
+
+    W1--&gt;&gt;DL: Store MSFT DataFrame
+    W2--&gt;&gt;DL: Store AAPL DataFrame
+    Note over DL: Waits for all workers to finish
+
+    DL-&gt;&gt;U: Return one combined DataFrame
+</code></pre>
+<p>If you peek inside the <code>yfinance</code> source code, specifically in <code>yfinance/multi.py</code>, you'll find the <code>download</code> function. It loops through your list of tickers and kicks off a threaded task for each one.</p>
+<pre><code class="language-python"># Simplified from yfinance/multi.py
+
+# A loop inside the download() function
+for i, ticker in enumerate(tickers):
+    _download_one_threaded(ticker, ...)
+</code></pre>
+<p>The <code>_download_one_threaded</code> function is where the magic happens. It runs in its own thread and, at its core, it simply creates a <a href="../01_ticker_object_/">Ticker Object</a> and calls its <code>.history()</code> method.</p>
+<pre><code class="language-python"># Simplified from yfinance/multi.py
+
+def _download_one(ticker, ...):
+    # It creates a Ticker object just like we did in Chapter 1!
+    data = Ticker(ticker).history(...)
+    # It then saves the result to a shared place
+    shared._DFS[ticker.upper()] = data
+</code></pre>
+<p>Each thread fetches data for its assigned ticker and stores the result in a shared dictionary (<code>shared._DFS</code>). Once all the threads have finished, the <code>download</code> function combines all the individual DataFrames into the single, master DataFrame that it returns to you.</p>
+<p>This clever use of threading makes <code>yfinance</code> incredibly fast for gathering large datasets.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>You've now unlocked the ability to work with multiple stocks at once, a crucial skill for any real-world financial analysis.</p>
+<ul>
+<li><strong>What you learned:</strong> How to fetch data for multiple tickers efficiently.</li>
+<li><strong>Key Tools:</strong><ul>
+<li><code>yf.download()</code>: Your high-speed tool for bulk-downloading <strong>historical price data</strong>.</li>
+<li><code>yf.Tickers</code>: Your organizer for managing a group of <code>Ticker</code> objects to get <strong>varied types of data</strong>.</li>
+</ul>
+</li>
+<li><strong>The Big Idea:</strong> <code>yfinance</code> uses multithreading to run multiple data requests in parallel, which is significantly faster than doing them one by one.</li>
+</ul>
+<p>So far, we've assumed you already know which tickers you want to analyze. But what if you want to discover new ones? For instance, how would you find all technology stocks based in the USA with a high dividend yield? For that, you'll need a way to screen and search for stocks.</p>
+<p>That's precisely what we'll explore in the next chapter on <a href="../03_screener___query_objects_/">Screener &amp; Query Objects</a>.</p>
+<hr />
+<p>Generated by Codebase Knowledge Builder</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../js/chat-config.js"></script>
+      
+        <script src="../../js/chat.js"></script>
+      
+    
+  </body>
+</html>
