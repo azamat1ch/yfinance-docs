@@ -2,6 +2,7 @@ site_name: Yahoo Finance Docs
 theme:
   name: material
 extra_javascript:
+  - js/chat-config.js
   - js/chat.js
 extra_css:
   - css/chat.css
