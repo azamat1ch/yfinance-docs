@@ -80,7 +80,7 @@ def parse_args() -> argparse.Namespace:
 
 def resolve_api_key() -> str:
     load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY", "AIzaSyD8TMh3sNO0eur1V95UBDHmga_Y4yEh1pY")
+    api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is not set. Export it or add it to a .env file.")
     return api_key

@@ -37,7 +37,7 @@ class ChatOut(BaseModel):
 
 @lru_cache(maxsize=1)
 def get_genai_client() -> genai.Client:
-    api_key = os.getenv("GEMINI_API_KEY", "AIzaSyD8TMh3sNO0eur1V95UBDHmga_Y4yEh1pY")
+    api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is not configured. Set it in the environment or a .env file.")
     return genai.Client(api_key=api_key)
